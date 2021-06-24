@@ -12,6 +12,7 @@
             <form enctype="multipart/form-data" asp-action="Criar">
                 <div class="row">
                     <div class="col-md-8">
+                        <span class="text-danger">@Html.ValidationMessage("lat_lng")</span>
                         <div id="map"></div>
                     </div>
                 </div>

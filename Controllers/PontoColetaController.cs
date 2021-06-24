@@ -32,20 +32,19 @@ namespace GreenMaps.Controllers
 
         public async Task<IActionResult> Criar()
         {
-            // Recupera os tipos de lixo e os tipos de ponto
-            var tiposLixos = await _context.TipoLixo.ToListAsync();
-            var tiposPontos = await _context.TipoPonto.ToListAsync();
-
-            // Seta a view bag para preencher os drop downs
-            ViewBag.TiposLixo = new MultiSelectList(tiposLixos, "Id", "Nome");
-            ViewBag.TiposPonto = new SelectList(tiposPontos, "Id", "Nome");
-
+            await SetDataCriarViewAsync();
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Criar(PontoColetaViewModel model)
         {
+            // Verifica se o usuário marcou o ponto de coleta no mapa
+            if (model.Latitude == null || model.Longitude == null)
+            {
+                ModelState.AddModelError("lat_lng", "Você deve clicar no mapa para marcar a localização do ponto de coleta");
+            }
+
             // Verifica se a view model está válida
             if (ModelState.IsValid)
             {
@@ -74,6 +73,8 @@ namespace GreenMaps.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            await SetDataCriarViewAsync();
             return View();
         }
 
@@ -96,6 +97,17 @@ namespace GreenMaps.Controllers
                 }
             }
             return nomeUnicoArquivo;
+        }
+
+        private async Task SetDataCriarViewAsync()
+        {
+            // Recupera os tipos de lixo e os tipos de ponto
+            var tiposLixos = await _context.TipoLixo.ToListAsync();
+            var tiposPontos = await _context.TipoPonto.ToListAsync();
+
+            // Seta a view bag para preencher os drop downs
+            ViewBag.TiposLixo = new MultiSelectList(tiposLixos, "Id", "Nome");
+            ViewBag.TiposPonto = new SelectList(tiposPontos, "Id", "Nome"); ;
         }
     }
 }
