@@ -1,0 +1,67 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+                <img src="~/custom/custom-login-screen/images/img-01.png" alt="IMG">
+            </div>
+            <form method="post" asp-route-returnUrl="@Model.ReturnUrl" class="login100-form validate-form">
+
+                <span class="login100-form-title">
+                    Registrar
+                </span>
+
+                <div class="wrap-input100">
+                    <input asp-for="Input.Username" placeholder="Nome de Usuário" class="input100 " />
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <div class="wrap-input100">
+                    <input asp-for="Input.Email" placeholder="Email" class="input100 " />
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <div class="wrap-input100">
+                    <input asp-for="Input.Password" placeholder="Senha" class="input100 " />
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <div class="wrap-input100">
+                    <input asp-for="Input.ConfirmPassword" placeholder="Confirmar Senha" class="input100 " />
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <div class="wrap-input100">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button type="submit" class="login100-form-btn">
+                        Registrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

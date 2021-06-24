@@ -26,6 +26,11 @@ namespace GreenMaps.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Logradouro = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Bairro = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cep = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -47,19 +52,29 @@ namespace GreenMaps.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PontoColeta",
+                name: "TipoLixo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Imagem = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PontoColeta", x => x.Id);
+                    table.PrimaryKey("PK_TipoLixo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TipoPonto",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipoPonto", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,6 +183,60 @@ namespace GreenMaps.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PontoColeta",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Imagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TipoPontoId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PontoColeta", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PontoColeta_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PontoColeta_TipoPonto_TipoPontoId",
+                        column: x => x.TipoPontoId,
+                        principalTable: "TipoPonto",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PontoColetaTipoLixo",
+                columns: table => new
+                {
+                    PontoColetasId = table.Column<int>(type: "int", nullable: false),
+                    TipoLixosId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PontoColetaTipoLixo", x => new { x.PontoColetasId, x.TipoLixosId });
+                    table.ForeignKey(
+                        name: "FK_PontoColetaTipoLixo_PontoColeta_PontoColetasId",
+                        column: x => x.PontoColetasId,
+                        principalTable: "PontoColeta",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PontoColetaTipoLixo_TipoLixo_TipoLixosId",
+                        column: x => x.TipoLixosId,
+                        principalTable: "TipoLixo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -206,6 +275,21 @@ namespace GreenMaps.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PontoColeta_TipoPontoId",
+                table: "PontoColeta",
+                column: "TipoPontoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PontoColeta_UsuarioId",
+                table: "PontoColeta",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PontoColetaTipoLixo_TipoLixosId",
+                table: "PontoColetaTipoLixo",
+                column: "TipoLixosId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -226,13 +310,22 @@ namespace GreenMaps.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "PontoColeta");
+                name: "PontoColetaTipoLixo");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "PontoColeta");
+
+            migrationBuilder.DropTable(
+                name: "TipoLixo");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "TipoPonto");
         }
     }
 }

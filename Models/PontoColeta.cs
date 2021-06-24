@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GreenMaps.Areas.Identity.Data;
 
 namespace GreenMaps.Models
 {
@@ -14,6 +15,7 @@ namespace GreenMaps.Models
         public string Nome { get; set; }
         [Required]
         public string Imagem { get; set; }
+        public Usuario Usuario { get; set; }
         public TipoPonto TipoPonto { get; set; }
         public ICollection<TipoLixo> TipoLixos { get; set; }
     }

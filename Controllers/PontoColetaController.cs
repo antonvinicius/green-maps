@@ -2,25 +2,31 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using GreenMaps.Areas.Identity.Data;
 using GreenMaps.Data;
 using GreenMaps.Models;
 using GreenMaps.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace GreenMaps.Controllers
 {
+    [Authorize]
     public class PontoColetaController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly UserManager<Usuario> _userManager;
 
-        public PontoColetaController([FromServices] ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
+        public PontoColetaController([FromServices] ApplicationDbContext context, IWebHostEnvironment hostEnvironment, UserManager<Usuario> userManager)
         {
             _context = context;
             webHostEnvironment = hostEnvironment;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Criar()
@@ -56,6 +62,10 @@ namespace GreenMaps.Controllers
                     TipoPonto = tipoPonto,
                     Nome = model.Nome
                 };
+
+                // Vincula o usuário logado com o ponto de coleta
+                var usuario = await _userManager.GetUserAsync(User);
+                pontoColeta.Usuario = usuario;
 
                 // Armazena os tipos de lixos vinculados ao ponto de coleta
                 var tiposLixos = _context.TipoLixo.Where(t => model.TipoLixoIds.Contains(t.Id)).ToList();
