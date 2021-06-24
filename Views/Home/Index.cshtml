@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<PontoColeta>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +8,79 @@
     <h1 class="display-4">Green Maps</h1>
     <p>Em busca de um mundo melhor, com menos lixos. 😊</p>
 </div>
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h4>Mapa</h4>
+        </div>
+        <div class="card-body">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    var markersCsharp = [];
+
+    @foreach (var marker in Model)
+    {
+        <text>
+            markersCsharp.push(
+                {
+                    lat: parseFloat('@marker.Latitude'.replace(',','.')),
+                    lng: parseFloat('@marker.Longitude'.replace(',','.')),
+                    id: '@marker.Id',
+                    nome: '@marker.Nome'
+                }
+            )
+        </text>
+    }
+
+    document.onload = getLocation();
+
+    function getLocation()
+    {
+        if (navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(setPositions);
+        } else
+        {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function setPositions(position)
+    {
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+
+        createMap(lat, lng)
+    }
+
+    function createMap(lat, lng)
+    {
+        // Cria o mapa baseado na longitude do usuário
+        var map = L.map('map').setView([lat, lng], 13);
+
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+
+        markersCsharp.forEach(x => {
+            L.marker([x.lat, x.lng]).addTo(map)
+            .bindPopup(`<a href="PontoColeta/Detalhes/${x.id}">Detalhes</a><br /><b>${x.nome}<b/>`);
+        })
+    }
+
+    function setLatLng(lat, lng)
+    {
+        document.getElementById("Latitude").value = lat
+        document.getElementById("Longitude").value = lng
+    }
+
+</script>
+}

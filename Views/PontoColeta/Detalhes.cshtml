@@ -1,0 +1,50 @@
+@model PontoColeta
+
+@{
+    ViewData["Title"] = "Detalhes";
+}
+
+<input hidden asp-for="Latitude" />
+<input hidden asp-for="Longitude" />
+
+<div class="col-md-12">
+    <div class="card">
+        <img src="~/Imagens/@Model.Imagem" class="card-img-top" alt="...">
+        <div class="card-header">
+            <h4>Ponto de Coleta</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Nome</h5>
+            <p class="card-text">Tipo do Ponto: @Model.TipoPonto.Nome</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Voltar</a>
+            <a id="route" class="btn btn-primary" target="_blank">Traçar Rota</a>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script>
+    document.onload = getLocation();
+
+    function getLocation()
+    {
+        if (navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(setPositions);
+        } else
+        {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function setPositions(position)
+    {
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+
+        var d_lat = document.getElementById('Latitude').value
+        var d_lng = document.getElementById('Longitude').value
+        document.getElementById('route').setAttribute('href', `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${d_lat.replace(',', '.')},${d_lng.replace(',', '.')}`)
+    }
+</script>
+}

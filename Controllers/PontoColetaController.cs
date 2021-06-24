@@ -23,13 +23,6 @@ namespace GreenMaps.Controllers
             webHostEnvironment = hostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            // Recupera a lista de pontos de coletas e mostra na tela
-            var pontoColetas = await _context.PontoColeta.ToListAsync();
-            return View(pontoColetas);
-        }
-
         public async Task<IActionResult> Criar()
         {
             await SetDataCriarViewAsync();
@@ -71,11 +64,25 @@ namespace GreenMaps.Controllers
                 // Salva o ponto de coleta no banco de dados e direciona para index
                 _context.PontoColeta.Add(pontoColeta);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
 
             await SetDataCriarViewAsync();
             return View();
+        }
+
+        public async Task<IActionResult> Detalhes(int id)
+        {
+            // Recupera o ponto de coleta do banco
+            var pontoColeta = await _context.PontoColeta
+                .Include(p => p.TipoLixos)
+                .Include(p => p.TipoPonto)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pontoColeta == null)
+                return NotFound();
+
+            return View(pontoColeta);
         }
 
         private string UploadedFile(PontoColetaViewModel model)
