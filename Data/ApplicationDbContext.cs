@@ -12,5 +12,7 @@ namespace GreenMaps.Data
         }
 
         public DbSet<PontoColeta> PontoColeta { get; set; }
+        public DbSet<TipoLixo> TipoLixo { get; set; }
+        public DbSet<TipoPonto> TipoPonto { get; set; }
     }
 }

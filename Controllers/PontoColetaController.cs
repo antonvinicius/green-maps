@@ -1,11 +1,13 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using GreenMaps.Data;
 using GreenMaps.Models;
 using GreenMaps.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace GreenMaps.Controllers
@@ -30,6 +32,14 @@ namespace GreenMaps.Controllers
 
         public async Task<IActionResult> Criar()
         {
+            // Recupera os tipos de lixo e os tipos de ponto
+            var tiposLixos = await _context.TipoLixo.ToListAsync();
+            var tiposPontos = await _context.TipoPonto.ToListAsync();
+
+            // Seta a view bag para preencher os drop downs
+            ViewBag.TiposLixo = new MultiSelectList(tiposLixos, "Id", "Nome");
+            ViewBag.TiposPonto = new SelectList(tiposPontos, "Id", "Nome");
+
             return View();
         }
 
@@ -42,14 +52,22 @@ namespace GreenMaps.Controllers
                 // Salva o arquivo no diretório de Imagens
                 var nomeUnicoArquivo = UploadedFile(model);
 
+                // Recupera o Tipo de Ponto
+                var tipoPonto = _context.TipoPonto.Find(model.TipoPontoId);
+
                 // Cria um ponto de coleta
                 var pontoColeta = new PontoColeta()
                 {
                     Imagem = nomeUnicoArquivo,
                     Latitude = double.Parse(model.Latitude.Replace('.', ',')),
                     Longitude = double.Parse(model.Longitude.Replace('.', ',')),
+                    TipoPonto = tipoPonto,
                     Nome = model.Nome
                 };
+
+                // Armazena os tipos de lixos vinculados ao ponto de coleta
+                var tiposLixos = _context.TipoLixo.Where(t => model.TipoLixoIds.Contains(t.Id)).ToList();
+                pontoColeta.TipoLixos = tiposLixos;
 
                 // Salva o ponto de coleta no banco de dados e direciona para index
                 _context.PontoColeta.Add(pontoColeta);
