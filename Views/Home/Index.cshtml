@@ -1,86 +1,134 @@
-﻿@model IEnumerable<PontoColeta>
-
-@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    Layout = null;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Green Maps</h1>
-    <p>Em busca de um mundo melhor, com menos lixos. 😊</p>
-</div>
+@model IEnumerable<PontoColeta>
+@using Microsoft.AspNetCore.Identity
+@using GreenMaps.Areas.Identity.Data
+@inject SignInManager<Usuario> SignInManager
+@inject UserManager<Usuario> UserManager
 
-<div class="col-md-12">
-    <div class="card">
-        <div class="card-header">
-            <h4>Mapa</h4>
-        </div>
-        <div class="card-body">
-            <div id="map"></div>
-        </div>
-    </div>
-</div>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-@section scripts{
-<script type="text/javascript">
-    var markersCsharp = [];
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/mapa.css" />
+    @* Bootstrap Select *@
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
-    @foreach (var marker in Model)
-    {
-        <text>
-            markersCsharp.push(
-                {
-                    lat: parseFloat('@marker.Latitude'.replace(',','.')),
-                    lng: parseFloat('@marker.Longitude'.replace(',','.')),
-                    id: '@marker.Id',
-                    nome: '@marker.Nome'
-                }
-            )
-        </text>
-    }
+    @* Link para referenciar biblioteca de mapas *@
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    @* Script para referenciar biblioteca de mapas *@
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+</head>
 
-    document.onload = getLocation();
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GreenMaps</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="PontoColeta" asp-action="Criar">Pontos de
+                                Coleta</a>
+                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index"
+                                title="Manage">Perfil</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
 
-    function getLocation()
-    {
-        if (navigator.geolocation)
+
+    <div id="map" style="width: 100%; height: 100%;"></div>
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        var markersCsharp = [];
+
+        @foreach (var marker in Model)
         {
-            navigator.geolocation.getCurrentPosition(setPositions);
-        } else
-        {
-            x.innerHTML = "Geolocation is not supported by this browser.";
+            <text>
+                markersCsharp.push(
+                    {
+                        lat: parseFloat('@marker.Latitude'.replace(',','.')),
+                        lng: parseFloat('@marker.Longitude'.replace(',','.')),
+                        id: '@marker.Id',
+                        nome: '@marker.Nome'
+                    }
+                )
+            </text>
         }
-    }
 
-    function setPositions(position)
-    {
-        lat = position.coords.latitude;
-        lng = position.coords.longitude;
+        document.onload = getLocation();
 
-        createMap(lat, lng)
-    }
+        function getLocation()
+        {
+            if (navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(setPositions);
+            } else
+            {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
 
-    function createMap(lat, lng)
-    {
-        // Cria o mapa baseado na longitude do usuário
-        var map = L.map('map').setView([lat, lng], 13);
+        function setPositions(position)
+        {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+
+            createMap(lat, lng)
+        }
+
+        function createMap(lat, lng)
+        {
+            // Cria o mapa baseado na longitude do usuário
+            var map = L.map('map').setView([lat, lng], 13);
 
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
 
-        markersCsharp.forEach(x => {
-            L.marker([x.lat, x.lng]).addTo(map)
-            .bindPopup(`<a href="PontoColeta/Detalhes/${x.id}">Detalhes</a><br /><b>${x.nome}<b/>`);
-        })
-    }
+            markersCsharp.forEach(x => {
+                L.marker([x.lat, x.lng]).addTo(map)
+                .bindPopup(`<a href="PontoColeta/Detalhes/${x.id}">Detalhes</a><br /><b>${x.nome}<b/>`);
+            })
+        }
 
-    function setLatLng(lat, lng)
-    {
-        document.getElementById("Latitude").value = lat
-        document.getElementById("Longitude").value = lng
-    }
+        function setLatLng(lat, lng)
+        {
+            document.getElementById("Latitude").value = lat
+            document.getElementById("Longitude").value = lng
+        }
 
-</script>
-}
+    </script>
+</body>
+
+</html>

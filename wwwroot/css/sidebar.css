@@ -1,0 +1,88 @@
+.sidenav {
+    height: 100%;
+    width: 90px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+    transition: all 0.4s;
+}
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    display: block;
+}
+
+.icon {
+    margin-bottom: 10px;
+    padding: 10px 15px 10px 15px;
+    color: #858585;
+}
+
+.icon:hover {
+    color: #ddd
+}
+
+.icon.active {
+    background-color: #555;
+    border-radius: 10px;
+}
+
+.open-nav {
+    display: none;
+    position: absolute;
+    margin-top: 20px;
+    padding: 10px 15px 10px 15px;
+    background-color: #555;
+    border-radius: 10px;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+#page-content-wrapper
+{
+    margin-left: 90px;
+}
+.closeNav{
+    display: none;
+}
+
+@media screen and (max-width: 794px) {
+    .sidenav {
+        height: 100%;
+        width: 0px;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        padding-top: 20px;
+        transition: all 0.4s;
+    }
+    .open-nav {
+        display: block;
+        position: absolute;
+        margin-top: 20px;
+        padding: 10px 15px 10px 15px;
+        background-color: #555;
+        border-radius: 10px;
+        font-size: 35px;
+        cursor: pointer;
+    }
+
+    #page-content-wrapper
+    {
+        margin-top: 90px;
+        margin-left: 0px;
+    }
+
+    .closeNav{
+        display: block;
+    }
+}

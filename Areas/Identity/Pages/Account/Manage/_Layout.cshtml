@@ -1,29 +1,63 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
-    {
-        Layout = (string)parentLayout;
-    }
-    else
-    {
-        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
-    }
+    Layout = null;
 }
 
-<h2>Manage your account</h2>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Perfil</title>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/custom/custom-side-bar/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/sidebar.css" />
+    <link rel="stylesheet" href="~/css/manage.css" />
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <i class="bi bi-list open-nav" onclick="openNav()"></i>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div class="sidenav" id="mySidenav">
+                <a onclick="closeNav()"><i class="bi bi-x-lg icon closeNav"></i></a>
+                <a asp-page="./Index"><i
+                        class="bi bi-person-fill icon @ManageNavPages.IndexNavClass(ViewContext)"></i></a>
+                <a asp-page="./ChangePassword"><i
+                        class="bi bi-shield-lock-fill icon @ManageNavPages.ChangePasswordNavClass(ViewContext)"></i></a>
+                <a asp-controller="Home" asp-action="Index"><i class="bi bi-map-fill icon"></i></a>
+            </div>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper" style="min-width: unset;">
+                <!-- Page content-->
+                <div class="mt-4">
+                    @RenderBody()
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="~/custom/custom-side-bar/js/scripts.js"></script>
+    <script>
+        function openNav()
+        {
+            document.getElementById("mySidenav").style.width = "90px";
+        }
 
-@section Scripts {
-    @RenderSection("Scripts", required: false)
-}
+        function closeNav()
+        {
+            document.getElementById("mySidenav").style.width = "0px";
+        }
+    </script>
+</body>
+
+</html>
+
+@RenderSection("Scripts", false)
