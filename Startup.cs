@@ -32,7 +32,7 @@ namespace GreenMaps
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            // services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Configurações do Identity
             services.AddDefaultIdentity<Usuario>(options =>
