@@ -26,11 +26,15 @@
             <!-- Sidebar-->
             <div class="sidenav" id="mySidenav">
                 <a onclick="closeNav()"><i class="bi bi-x-lg icon closeNav"></i></a>
+                <a onclick="closeNav()"><i class="bi bi-x-lg icon closeNav"></i></a>
+                <a onclick="location.href='@Url.Action("Index","Home")'"><i class="bi bi-map-fill icon"
+                        id="map-nav"></i></a>
+                <a onclick="location.href='@Url.Action("Criar","PontoColeta")'"><i class="bi bi-recycle icon"
+                        id="ponto-nav"></i></a>
                 <a asp-page="./Index"><i
                         class="bi bi-person-fill icon @ManageNavPages.IndexNavClass(ViewContext)"></i></a>
                 <a asp-page="./ChangePassword"><i
                         class="bi bi-shield-lock-fill icon @ManageNavPages.ChangePasswordNavClass(ViewContext)"></i></a>
-                <a asp-controller="Home" asp-action="Index"><i class="bi bi-map-fill icon"></i></a>
             </div>
             <!-- Page content wrapper-->
             <div id="page-content-wrapper" style="min-width: unset;">
