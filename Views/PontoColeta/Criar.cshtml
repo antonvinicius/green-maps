@@ -3,84 +3,79 @@
     ViewData["Title"] = "Criar";
 }
 
-<div class="col-md-12">
-    <div class="card">
-        <div class="card-header text-uppercase">
-            <h4>Incluir novo ponto de coleta</h4>
-        </div>
-        <div class="card-body">
-            <form enctype="multipart/form-data" asp-action="Criar">
-                <div class="row">
-                    <div class="col-md-8">
-                        <span class="text-danger">@Html.ValidationMessage("lat_lng")</span>
-                        <div id="map"></div>
+<div class="w-100">
+    <div class="mycontainer d-flex justify-content-center">
+        <form enctype="multipart/form-data" asp-action="Criar" style="margin-top: 150px;">
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="text-danger">@Html.ValidationMessage("lat_lng")</span>
+                    <div id="map" style="height: 250px; border-radius: 50px;"></div>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Latitude" class="control-label"></label>
+                        <input asp-for="Latitude" class="form-control" />
+                        <span asp-validation-for="Latitude" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="row d-none">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label asp-for="Latitude" class="control-label"></label>
-                            <input asp-for="Latitude" class="form-control" />
-                            <span asp-validation-for="Latitude" class="text-danger"></span>
+            </div>
+            <div class="row d-none">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Longitude" class="control-label"></label>
+                        <input asp-for="Longitude" class="form-control" />
+                        <span asp-validation-for="Longitude" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Nome" class="control-label"></label>
+                        <input asp-for="Nome" class="form-control" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="TipoPontoId" class="control-label">Tipo do Ponto</label>
+                        @Html.DropDownListFor(x => x.TipoPontoId, (SelectList)ViewBag.TiposPonto, new { @class =
+                        "form-control selectpicker" })
+                        <span asp-validation-for="TipoPontoId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="TipoLixoIds" class="control-label">Tipos de Lixos</label>
+                        @Html.ListBoxFor(x => x.TipoLixoIds, (MultiSelectList)ViewBag.TiposLixo, new { @class =
+                        "form-control selectpicker" })
+                        <span asp-validation-for="TipoLixoIds" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Imagem" class="control-label"></label>
+                        <div class="custom-file">
+                            <input asp-for="Imagem" class="custom-file-input" type="file" id="customFile">
+                            <label class="custom-file-label" for="customFile">Escolha a imagem</label>
                         </div>
+                        <span asp-validation-for="Imagem" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="row d-none">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label asp-for="Longitude" class="control-label"></label>
-                            <input asp-for="Longitude" class="form-control" />
-                            <span asp-validation-for="Longitude" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label asp-for="Nome" class="control-label"></label>
-                            <input asp-for="Nome" class="form-control" />
-                            <span asp-validation-for="Nome" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label asp-for="TipoPontoId" class="control-label"></label>
-                            @Html.DropDownListFor(x => x.TipoPontoId, (SelectList)ViewBag.TiposPonto, new { @class =
-                            "form-control selectpicker" })
-                            <span asp-validation-for="TipoPontoId" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label asp-for="TipoLixoIds" class="control-label"></label>
-                            @Html.ListBoxFor(x => x.TipoLixoIds, (MultiSelectList)ViewBag.TiposLixo, new { @class =
-                            "form-control selectpicker" })
-                            <span asp-validation-for="TipoLixoIds" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label asp-for="Imagem" class="control-label"></label>
-                            <div class="custom-file">
-                                <input asp-for="Imagem" class="custom-file-input" type="file" id="customFile">
-                                <label class="custom-file-label" for="customFile">Escolha a imagem</label>
-                            </div>
-                            <span asp-validation-for="Imagem" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Criar" class="btn btn-primary" />
-                    <a asp-controller="Home" asp-action="Index" class="btn btn-warning">Voltar</a>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Criar" class="btn btn-primary" />
+                <a asp-controller="Home" asp-action="Index" class="btn btn-default">Voltar</a>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -117,22 +112,32 @@
     function createMap(lat, lng)
     {
         // Cria o mapa baseado na longitude do usuário
-        var map = L.map('map').setView([lat, lng], 13);
+        var map = L.map('map', { zoomControl: false }).setView([lat, lng], 13);
 
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution: 'GreenMaps'
         }).addTo(map);
 
         L.marker([lat, lng]).addTo(map)
             .bindPopup('Você está aqui.')
             .openPopup();
 
+        var markers = L.markerClusterGroup();
+
+        var greenIcon = L.icon({
+            iconUrl: '/assets/trash-fill.svg',
+            iconSize: [21, 21], // size of the icon
+        });
+
         map.on('click', function (e)
         {
-            alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+            markers.clearLayers()
+            var marker = L.marker([e.latlng.lat, e.latlng.lng], { icon: greenIcon })
+            markers.addLayer(marker)
             setLatLng(e.latlng.lat, e.latlng.lng)
         });
+        map.addLayer(markers)
     }
 
     function setLatLng(lat, lng)
