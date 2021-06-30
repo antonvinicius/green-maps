@@ -1,0 +1,30 @@
+@model ICollection<Usuario>
+
+<div class="d-flex justify-content-center">
+    <div class="card" style="width: 100%; max-width: 500px; margin-top: 100px; max-height: 600px;">
+        <div class="card-header">
+            <h2>Ranking de Usuários</h2>
+        </div>
+        <div class="card-body" style="max-height: 400px;">
+            @foreach (var usuario in Model)
+            {
+                <div class="pontoColeta d-flex align-items-center mb-3">
+                    <img src="~/assets/avatar.png" style="width: 30px; margin-right: 20px;" class="rounded" alt="Avatar" />
+                    <div class="d-flex flex-column labels">
+                        <h4>@usuario.UserName</h4>
+                        <h6>Já cadastrou @usuario.PontoColeta.Count pontos de coleta</h6>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts{
+
+<script>
+    $(document).ready(() =>
+    {
+        $("#rank-nav").addClass("active")
+    })
+</script>
+}
