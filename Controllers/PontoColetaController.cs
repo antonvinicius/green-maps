@@ -87,6 +87,7 @@ namespace GreenMaps.Controllers
             var pontoColeta = await _context.PontoColeta
                 .Include(p => p.TipoLixos)
                 .Include(p => p.TipoPonto)
+                .Include(p => p.Usuario)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (pontoColeta == null)
