@@ -132,6 +132,7 @@
 
         map.on('click', function (e)
         {
+            console.log(e.latlng.lat, e.latlng.lng)
             markers.clearLayers()
             var marker = L.marker([e.latlng.lat, e.latlng.lng], { icon: greenIcon })
             markers.addLayer(marker)
