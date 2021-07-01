@@ -59,18 +59,18 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            @* <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group">
-                        <label asp-for="Imagem" class="control-label"></label>
-                        <div class="custom-file">
-                            <input asp-for="Imagem" class="custom-file-input" type="file" id="customFile">
-                            <label class="custom-file-label" for="customFile">Escolha a imagem</label>
-                        </div>
-                        <span asp-validation-for="Imagem" class="text-danger"></span>
-                    </div>
+                <div class="form-group">
+                <label asp-for="Imagem" class="control-label"></label>
+                <div class="custom-file">
+                <input asp-for="Imagem" class="custom-file-input" type="file" id="customFile">
+                <label class="custom-file-label" for="customFile">Escolha a imagem</label>
                 </div>
-            </div>
+                <span asp-validation-for="Imagem" class="text-danger"></span>
+                </div>
+                </div>
+                </div> *@
             <div class="form-group">
                 <input type="submit" value="Criar" class="btn btn-primary" />
                 <a asp-controller="Home" asp-action="Index" class="btn btn-default">Voltar</a>

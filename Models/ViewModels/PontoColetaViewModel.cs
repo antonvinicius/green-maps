@@ -11,8 +11,8 @@ namespace GreenMaps.Models.ViewModels
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome { get; set; }
 
-        [Required(ErrorMessage = "A imagem é obrigatória")]
-        public IFormFile Imagem { get; set; }
+        // [Required(ErrorMessage = "A imagem é obrigatória")]
+        // public IFormFile Imagem { get; set; }
 
         [Required(ErrorMessage = "Selecione um tipo de ponto")]
         public int TipoPontoId { get; set; }

@@ -25,7 +25,7 @@
                     {
                         <div class="pontoColeta d-flex align-items-center mb-3"
                         onclick="location.href='@Url.Action("Detalhes","PontoColeta", new {id = ponto.Id})'">
-                            <img src="~/Imagens/@ponto.Imagem" class="rounded" alt="Ponto de Coleta" />
+                            @* <img src="~/Imagens/@ponto.Imagem" class="rounded" alt="Ponto de Coleta" /> *@
                             <div class="d-flex flex-column labels">
                                 <h4>@ponto.Nome</h4>
                                 <h6>@ponto.TipoPonto.Nome</h6>

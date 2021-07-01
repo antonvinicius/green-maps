@@ -13,8 +13,8 @@ namespace GreenMaps.Models
         public double Latitude { get; set; }
         [Required]
         public string Nome { get; set; }
-        [Required]
-        public string Imagem { get; set; }
+        // [Required]
+        // public string Imagem { get; set; }
         public Usuario Usuario { get; set; }
         public TipoPonto TipoPonto { get; set; }
         public ICollection<TipoLixo> TipoLixos { get; set; }

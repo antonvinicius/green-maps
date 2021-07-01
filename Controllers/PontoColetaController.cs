@@ -50,7 +50,7 @@ namespace GreenMaps.Controllers
             if (ModelState.IsValid)
             {
                 // Salva o arquivo no diretório de Imagens
-                var nomeUnicoArquivo = UploadedFile(model);
+                // var nomeUnicoArquivo = UploadedFile(model);
 
                 // Recupera o Tipo de Ponto
                 var tipoPonto = _context.TipoPonto.Find(model.TipoPontoId);
@@ -58,7 +58,7 @@ namespace GreenMaps.Controllers
                 // Cria um ponto de coleta
                 var pontoColeta = new PontoColeta()
                 {
-                    Imagem = nomeUnicoArquivo,
+                    // Imagem = nomeUnicoArquivo,
                     Latitude = double.Parse(model.Latitude, CultureInfo.InvariantCulture),
                     Longitude = double.Parse(model.Longitude, CultureInfo.InvariantCulture),
                     TipoPonto = tipoPonto,
@@ -98,28 +98,28 @@ namespace GreenMaps.Controllers
             return View(pontoColeta);
         }
 
-        private string UploadedFile(PontoColetaViewModel model)
-        {
-            string nomeUnicoArquivo = null;
-            // Verifica se a imagem está vazia
-            if (model.Imagem != null)
-            {
-                var optimizer = new ImageOptimizer();
-                // Pega o caminho relativo do diretório de imagens
-                string pastaFotos = Path.Combine(webHostEnvironment.WebRootPath, "Imagens");
-                // Cria um nome único para a imagem
-                nomeUnicoArquivo = Guid.NewGuid().ToString() + "_" + model.Imagem.FileName;
-                // Combina o caminho relativo com o nome
-                string caminhoArquivo = Path.Combine(pastaFotos, nomeUnicoArquivo);
-                // Salva o arquivo no diretório
-                using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))
-                {
-                    optimizer.Compress(fileStream);
-                    model.Imagem.CopyTo(fileStream);
-                }
-            }
-            return nomeUnicoArquivo;
-        }
+        // private string UploadedFile(PontoColetaViewModel model)
+        // {
+        //     string nomeUnicoArquivo = null;
+        //     // Verifica se a imagem está vazia
+        //     if (model.Imagem != null)
+        //     {
+        //         var optimizer = new ImageOptimizer();
+        //         // Pega o caminho relativo do diretório de imagens
+        //         string pastaFotos = Path.Combine(webHostEnvironment.WebRootPath, "Imagens");
+        //         // Cria um nome único para a imagem
+        //         nomeUnicoArquivo = Guid.NewGuid().ToString() + "_" + model.Imagem.FileName;
+        //         // Combina o caminho relativo com o nome
+        //         string caminhoArquivo = Path.Combine(pastaFotos, nomeUnicoArquivo);
+        //         // Salva o arquivo no diretório
+        //         using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))
+        //         {
+        //             optimizer.Compress(fileStream);
+        //             model.Imagem.CopyTo(fileStream);
+        //         }
+        //     }
+        //     return nomeUnicoArquivo;
+        // }
 
         private async Task SetDataCriarViewAsync()
         {

@@ -192,7 +192,6 @@ namespace GreenMaps.Migrations
                     Longitude = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
                     Latitude = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Imagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TipoPontoId = table.Column<int>(type: "int", nullable: true)
                 },
