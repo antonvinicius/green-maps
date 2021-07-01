@@ -189,8 +189,8 @@ namespace GreenMaps.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
+                    Latitude = table.Column<decimal>(type: "decimal(8,6)", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Imagem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
