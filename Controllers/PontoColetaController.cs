@@ -7,6 +7,7 @@ using GreenMaps.Areas.Identity.Data;
 using GreenMaps.Data;
 using GreenMaps.Models;
 using GreenMaps.Models.ViewModels;
+using ImageMagick;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -103,6 +104,7 @@ namespace GreenMaps.Controllers
             // Verifica se a imagem está vazia
             if (model.Imagem != null)
             {
+                var optimizer = new ImageOptimizer();
                 // Pega o caminho relativo do diretório de imagens
                 string pastaFotos = Path.Combine(webHostEnvironment.WebRootPath, "Imagens");
                 // Cria um nome único para a imagem
@@ -112,6 +114,7 @@ namespace GreenMaps.Controllers
                 // Salva o arquivo no diretório
                 using (var fileStream = new FileStream(caminhoArquivo, FileMode.Create))
                 {
+                    optimizer.Compress(fileStream);
                     model.Imagem.CopyTo(fileStream);
                 }
             }
