@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,8 +58,8 @@ namespace GreenMaps.Controllers
                 var pontoColeta = new PontoColeta()
                 {
                     Imagem = nomeUnicoArquivo,
-                    Latitude = double.Parse(model.Latitude.Replace('.', ',')),
-                    Longitude = double.Parse(model.Longitude.Replace('.', ',')),
+                    Latitude = double.Parse(model.Latitude, CultureInfo.InvariantCulture),
+                    Longitude = double.Parse(model.Longitude, CultureInfo.InvariantCulture),
                     TipoPonto = tipoPonto,
                     Nome = model.Nome
                 };
