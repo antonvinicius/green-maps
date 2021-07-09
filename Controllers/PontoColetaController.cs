@@ -83,6 +83,7 @@ namespace GreenMaps.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Detalhes(int id)
         {
             // Recupera o ponto de coleta do banco

@@ -44,6 +44,9 @@
             <a onclick="location.href='@Url.Action("Criar","PontoColeta")'"><i class="bi bi-recycle icon" id="ponto-nav"></i></a>
             <a onclick="location.href='@Url.Action("Index","Rank")'"><i class="bi bi-trophy-fill icon" id="ponto-nav"></i></a>
             <a asp-page="/Account/Manage/Index" asp-area="Identity"><i class="bi bi-person-fill icon" id="perfil-nav"></i></a>
+            @if (SignInManager.IsSignedIn(User)){
+                <a asp-page="/Account/Logout" asp-area="Identity"><i class="bi bi-door-closed-fill icon"></i></a>
+            }
         </div>
     </header>
 

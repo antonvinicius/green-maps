@@ -22,7 +22,7 @@ namespace GreenMaps.Controllers
         public async Task<IActionResult> Index()
         {
             // Recupera todos os usuários
-            var usuarios = await _context.Users.Include(x => x.PontoColeta).ToListAsync();
+            var usuarios = await _context.Users.Include(x => x.PontoColeta).OrderByDescending(x => x.PontoColeta.Count).ToListAsync();
             return View(usuarios);
         }
     }
